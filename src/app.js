@@ -36,6 +36,14 @@ io.on('connection', (socket) => {
         io.to(gameIdFromSocket).emit('gameStatistics', game)
     })
 
+    socket.on('doStartGame', () => {
+        const game = getGameByPlayerId(socket.id)
+
+        // TODO : Passer la game EN_COURS = true
+
+        io.to(game.id).emit('gameStarted')
+    })
+
     socket.on('startRound', () => {
         const game = getGameByPlayerId(socket.id)
         const country = startRound(game.id)

@@ -26,6 +26,14 @@ const routes = [
       title: 'GEOBATTLE - Lobby'
     }
   },
+  {
+    path: '/game',
+    name: 'Game',
+    component: require('@/views/Game').default,
+    meta: {
+      title: 'GEOBATTLE - Game'
+    }
+  },
 ]
 
 const router = new VueRouter({

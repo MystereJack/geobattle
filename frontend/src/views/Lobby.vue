@@ -22,7 +22,7 @@
         </v-col>
         <v-card-actions class="justify-center">
             <v-btn
-                @click="startGame"
+                @click="doStartGame"
                 class="login-button"
                 width="150px"
             >
@@ -67,6 +67,9 @@ export default {
       this.game = game
       console.log(game)
       this.calculateURL()
+    },
+    gameStarted() {
+      this.$router.push({ name : 'Game'})
     }
   },
   methods: {
@@ -78,7 +81,10 @@ export default {
       const gameId = this.game.id.replace('game_', '')
       const path = this.$router.resolve({name : 'Start', query : {gameId}}).href
       this.gameURL = `http://${window.location.hostname}:8080/` + path
-    }
+    },
+    doStartGame() {
+      this.$socket.client.emit('doStartGame')
+    },
   }
 }
 </script>
