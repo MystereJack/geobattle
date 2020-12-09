@@ -14,9 +14,8 @@ const io = socketio(server, {
     }
 })
 
-const publicDirectoryPath = path.join(__dirname, '../public')
+const publicDirectoryPath = path.join(__dirname, '../frontend/dist')
 app.use(express.static(publicDirectoryPath))
-app.use(express.static(path.join(__dirname + '../node_modules')))
 
 app.use(cors());
 
