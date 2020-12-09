@@ -53,18 +53,16 @@ io.on('connection', (socket) => {
         })
     })
 
-    socket.on('verifyCountry', (isoCode) => {
+    socket.on('selectCountry', (isoCode) => {
         const game = getGameByPlayerId(socket.id)
         if(game) {
             const isOK = verifyCountry(isoCode, game.id)
             
             if(isOK) {
-                game.players.find((player) => player.id === socket.id).score += 1000
+                socket.emit('answerOK', game.currentRound.name.official)
+            } else {
+                socket.emit('answerKO', game.currentRound.name.official)
             }
-
-            io.to(game.id).emit('gameStatistics', {
-                game
-            })
         }
     })
 

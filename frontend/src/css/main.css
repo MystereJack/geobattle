@@ -14,3 +14,19 @@
     top: 0;
     left: 0;
 }
+
+.center {
+    text-align: center;    
+}
+
+.answerOK {
+    text-align: center;
+    color: green;
+    font-weight: bold;
+}
+
+.answerKO {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}

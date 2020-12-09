@@ -65,7 +65,8 @@ const startRound = (gameId) => {
 const verifyCountry = (isoCode, gameId) => {
     const game = games.find((game) => game.id === gameId)
     if(game.currentRound) {
-        return isoCode === game.currentRound.cca2
+        console.log('isoCode', isoCode, 'game', game.currentRound.cca3)
+        return isoCode === game.currentRound.cca3
     } 
 
     return false;
