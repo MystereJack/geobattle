@@ -5,6 +5,15 @@
         <h1 class="center">{{ currentCountry }}</h1>
         <h2 class="answerOK">{{ answerOK }}</h2>
         <h2 class="answerKO">{{ answerKO }}</h2>
+        <v-col cols="12" v-for="player in players" :key="player.id">
+          <v-icon
+            large
+            color="indigo"
+          >
+            mdi-account-circle
+          </v-icon>
+          {{player.username}} - {{player.score}}
+        </v-col>
       </v-card>
       <Map @selected="selectedCountry" />
         <!--
@@ -26,36 +35,36 @@ export default {
   },
   data: () => ({
     currentCountry: "",
+    players:"",
     answerOK:"",
     answerKO:"",
   }),
   mounted() {
-    // this.$refs.countdown.start()
-    this.$socket.client.emit('startRound')
-    console.log('StartRound')
+    this.$socket.client.emit('roundCurrent')
   },
   sockets: {
     roundStarted(result) {
-      console.log('roundStarted')
-      this.currentCountry = result.country
+      this.currentCountry = result.hint
     },
-    answerOK(answer) {
-      console.log('AnswerOK', answer)
-      this.$socket.client.emit('startRound')
+    roundGuessOK(answer) {
       this.answerKO = ""
       this.answerOK = answer
     },
-    answerKO(answer) {
-      console.log('AnswerKO', answer)
-      this.$socket.client.emit('startRound')
+    roundGuessKO(answer) {
       this.answerOK = ""
       this.answerKO = answer
+    },
+    gameLobby(lobby) {
+      this.players = lobby.players
+    },
+    roundEnd() {
+      console.log('ROUND END')
+      this.$socket.client.emit('roundCurrent')
     }
   },
   methods: {
     selectedCountry(selectedCountry) {
-      console.log('selectedCountry', selectedCountry)
-      this.$socket.client.emit('selectCountry', selectedCountry.ISO_A3)
+      this.$socket.client.emit('roundGuess', selectedCountry.ISO_A3)
     }
   }
 }

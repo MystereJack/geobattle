@@ -11,7 +11,7 @@
               @click:append="copyText"
               readonly
           ></v-text-field>
-        <v-col cols="12" v-for="player in game.players" :key="player.id">
+        <v-col cols="12" v-for="player in lobby.players" :key="player.id">
           <v-icon
             large
             color="indigo"
@@ -54,18 +54,17 @@
 export default {
   name: 'Game',
   data: () => ({
-    game: "",
+    lobby: "",
     gameURL: "",
     copyAlert: false
   }),
   mounted() {
     const { username, gameId } = this.$route.query
-    this.$socket.client.emit('joinGame', { username, randomId: gameId })
+    this.$socket.client.emit('gameJoin', { username, gameId })
   },
   sockets: {
-    gameStatistics(game) {
-      this.game = game
-      console.log(game)
+    gameLobby(lobby) {
+      this.lobby = lobby
       this.calculateURL()
     },
     gameStarted() {
@@ -78,12 +77,12 @@ export default {
       this.copyAlert = true
     },
     calculateURL() {
-      const gameId = this.game.id.replace('game_', '')
-      const path = this.$router.resolve({name : 'Start', query : {gameId}}).href
+      console.log(this.lobby)
+      const path = this.$router.resolve({name : 'Start', query : {gameId: this.lobby.id}}).href
       this.gameURL = `http://${window.location.hostname}:8080/` + path
     },
     doStartGame() {
-      this.$socket.client.emit('doStartGame')
+      this.$socket.client.emit('gameStart')
     },
   }
 }

@@ -33,13 +33,11 @@ export default {
     gameId: "",
   }),
   mounted() {
-    this.gameId = this.$route.query.gameId
+    this.gameId = parseInt(this.$route.query.gameId)
 
     if(!this.gameId) {
       this.gameId = Math.floor(Math.random() * 1000000)
     }
-
-    console.log(this.gameId)
   },
   methods: {
     startGame() {
