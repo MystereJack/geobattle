@@ -30,3 +30,41 @@
     color: red;
     font-weight: bold;
 }
+
+.hint {
+    margin-top: 20px;
+    position: absolute !important; 
+    height: 100px; 
+    width: 300px; 
+    background-color: white; 
+    z-index: 999;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.flex-left {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.scores {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    position: absolute !important; 
+    height: 300px; 
+    width: 200px; 
+    background-color: white; 
+    z-index: 999;
+    left: 0;
+    bottom: 0;
+}
+
+.no-padding {
+    padding: 0px !important;
+}
+
+.flex {
+    display: inline-flex;
+    justify-content: center;
+}

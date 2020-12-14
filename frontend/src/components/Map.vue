@@ -7,7 +7,9 @@
 <script>
 import "leaflet/dist/leaflet.css"
 import L from "leaflet"
-import data from "../data/countries.geo.json"
+// https://geojson-maps.ash.ms/
+import data from "../data/custom.geo.json"
+import smallCountries from "../data/small.countries.geo.json"
 
 export default {
     name: "Map",
@@ -16,9 +18,11 @@ export default {
     methods: {
         defineStyle: function() {
             return { 
-                color: '#E5E5E5',
-                fillColor: '#FFF9E5',
-                weight: 0.5,
+                color: '#9C9C9C',
+                fillColor: '#FFFAC3',
+                opacity: 0.75,
+                fillOpacity: 1,
+                weight: 0.25,
             }
         },
         onEachFeature: function(feature, layer) {
@@ -26,26 +30,49 @@ export default {
             layer.on('click', () => self.selectCountry(feature.properties))
             layer.on('mouseover', () => { 
                 layer.setStyle({
-                    fillColor: '#000000'
+                    fillColor: '#FFE360'
                 })  
             })
             layer.on('mouseout', () => { 
                 layer.setStyle({
-                    fillColor: '#FFF9E5'
+                    fillColor: '#FFFAC3'
                 })  
             })
         },
-        setup: function() {
-            const mapDiv = L.map("mapContainer").setView([35,35], 3);
-            L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-            {
-                maxZoom: 6,
-                minZoom: 2,
-            }).addTo(mapDiv);
-            L.geoJSON(data, { onEachFeature: this.onEachFeature, style: this.defineStyle }).addTo(mapDiv)
-        },
         selectCountry(selectedCountry) {
             this.$emit('selected', (selectedCountry))
+        },
+        setup: function() {
+            const mapDiv = L.map("mapContainer").setView([35,35], 3);
+            L.tileLayer("https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer/tile/{z}/{y}/{x}",
+            {
+                maxZoom: 6,
+                minZoom: 3,
+                wheelPxPerZoomLevel: 150,
+            }).addTo(mapDiv);
+            L.geoJSON(data, { 
+                onEachFeature: this.onEachFeature, 
+                style: this.defineStyle 
+            }).addTo(mapDiv)
+            this.addMarkers(mapDiv)
+        },
+        addMarkers: function(mapDiv) {
+            smallCountries.markers.forEach((item) => {
+                L.circle(item.latLng, {
+                    color: '#ACACAC', 
+                    fillColor: '#FFF7A0', 
+                    fillOpacity: 1,
+                    weight: 2,
+                    radius: 30000
+                }).addTo(mapDiv)
+                  .on('click', () => this.selectCountry(item))
+                  .on('mouseover', (e) => e.target.setStyle({
+                    fillColor: '#FFE360', 
+                  }))
+                  .on('mouseout', (e) => e.target.setStyle({
+                     fillColor: '#FFF7A0', 
+                  }))
+            })
         }
     },
     mounted() {
@@ -57,10 +84,10 @@ export default {
 <style scoped>
     #mapContainer {
         width: 100vw;
-        height: 80vh;
+        height: 100vh;
     }
 
     .leaflet-container {
-    background-color:rgba(255,0,0,0.0);
+    background-color:#6AADDD;
 }
 </style>

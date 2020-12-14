@@ -1,10 +1,15 @@
 <template>
-  <v-container fluid fill-height>
-    <v-layout row wrap child-flex align-center style="position: relative;">
-      <v-card>
-        <h1 class="center">{{ currentCountry }}</h1>
-        <h2 class="answerOK">{{ answerOK }}</h2>
-        <h2 class="answerKO">{{ answerKO }}</h2>
+  <v-container fluid class="no-padding">
+    <v-layout row class="no-padding flex">
+      <v-card class="hint">
+        <h3 class="center">{{ currentCountry }}</h3>
+        <h4 class="answerOK">{{ answerOK }}</h4>
+        <h4 class="answerKO">{{ answerKO }}</h4>
+      </v-card>
+    </v-layout> 
+    <v-layout row class="flex-left">
+      <v-card class="scores">
+        <h3 class="center">SCORES</h3>
         <v-col cols="12" v-for="player in players" :key="player.id">
           <v-icon
             large
@@ -15,6 +20,8 @@
           {{player.username}} - {{player.score}}
         </v-col>
       </v-card>
+    </v-layout>
+    <v-layout row class="no-padding flex">
       <Map @selected="selectedCountry" />
         <!--
         <countdown ref="countdown" :time="10000" :interval="100" class="countdown">
@@ -64,7 +71,7 @@ export default {
   },
   methods: {
     selectedCountry(selectedCountry) {
-      this.$socket.client.emit('roundGuess', selectedCountry.ISO_A3)
+      this.$socket.client.emit('roundGuess', selectedCountry.sov_a3)
     }
   }
 }

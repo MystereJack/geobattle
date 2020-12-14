@@ -33,10 +33,10 @@ const initSockets = (io, socket) => {
             let roundEnded = false
             if(isOK) {
                 roundEnded = game.getCurrentRound().closeParticipant(socket.id, isoCode, 1000)
-                socket.emit(roundEvents.GUESS_OK, game.getCurrentRound().country.name.official)
+                socket.emit(roundEvents.GUESS_OK, game.getCurrentRound().country.name.common)
             } else {
                 roundEnded = game.getCurrentRound().closeParticipant(socket.id, isoCode, 0)
-                socket.emit(roundEvents.GUESS_KO, game.getCurrentRound().country.name.official)
+                socket.emit(roundEvents.GUESS_KO, game.getCurrentRound().country.name.common)
             }
             io.to(game.id).emit(gameEvents.LOBBY, game.showLobby())
 
