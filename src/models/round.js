@@ -1,7 +1,8 @@
-module.exports = function Round(gameId, country, hint, players) {
+module.exports = function Round(gameId, country, hint, gameMode, players) {
     this.gameId = gameId
     this.country = country
     this.hint = hint
+    this.gameMode = gameMode
     this.participants = []
     this.completed = false
 

@@ -1,6 +1,5 @@
 const roundEvents = require('../constants/round')
 const gameEvents = require('../constants/game')
-const Round = require('../models/round')
 const { initRound, processGuess } = require('../services/round')
 const { getGameByPlayerId } = require('../services/game')
 
@@ -16,10 +15,7 @@ const initSockets = (io, socket) => {
         let round = game.getCurrentRound()
 
         if(!round) {
-            const country = initRound(game.id)
-            round = new Round(
-                game.id, country, country.capital[0], game.players)
-            game.addRound(round)
+            round = initRound(game)
         }
 
         io.to(game.id).emit(roundEvents.STARTED, round)
@@ -33,11 +29,11 @@ const initSockets = (io, socket) => {
             let roundEnded = false
             if(isOK) {
                 roundEnded = game.getCurrentRound().closeParticipant(socket.id, isoCode, 1000)
-                socket.emit(roundEvents.GUESS_OK, game.getCurrentRound().country.name.common)
             } else {
                 roundEnded = game.getCurrentRound().closeParticipant(socket.id, isoCode, 0)
-                socket.emit(roundEvents.GUESS_KO, game.getCurrentRound().country.name.common)
             }
+            socket.emit(roundEvents.GUESS_RESULT, game.getCurrentRound().country)
+            
             io.to(game.id).emit(gameEvents.LOBBY, game.showLobby())
 
             if(roundEnded) {

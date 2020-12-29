@@ -43,8 +43,11 @@ module.exports = function Game(id, owner) {
                     .flatMap((item) => item.participants)
                     .filter((item) => item.id === playerId)
                     .reduce((a,b) => a + b.points, 0)
-        console.log(this.rounds.flatMap((item) => item.participants).filter((item) => item.id === playerId))
         return score
+    }
+
+    this.addOptions = function(opts) {
+        this.options = opts.options
     }
 
     this.showLobby = function() {

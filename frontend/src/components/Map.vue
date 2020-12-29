@@ -10,11 +10,50 @@ import L from "leaflet"
 // https://geojson-maps.ash.ms/
 import data from "../data/custom.geo.json"
 import smallCountries from "../data/small.countries.geo.json"
-
+import store from '../store'
 export default {
     name: "Map",
     data: () => ({
+        mapLayer: new Map(),
+        mapDiv: '',
     }),
+    watch: {
+        '$store.state.selectedCountry': function() {
+            if(this.$store.state.selectedCountry) {
+                this.mapLayer.get(this.$store.state.selectedCountry.sov_a3).setStyle({
+                    fillColor: '#FFE360'
+                })
+            } else {
+                this.mapLayer.forEach((value, key) => {
+                    value.setStyle({
+                        fillColor: '#FFFAC3'
+                    })
+                })
+                this.mapDiv.flyTo([35,35], 3, {
+                    animate: true,
+                    duration: 0.5,
+                })
+            }
+
+        },
+        '$store.state.answer': function() {
+            if(this.$store.state.answer) {
+                if(this.$store.state.answer.cca3 === this.$store.state.selectedCountry.sov_a3) {
+                    this.mapLayer.get(this.$store.state.answer.cca3).setStyle({
+                        fillColor: '#96CA8D'
+                    })
+                } else {
+                    this.mapLayer.get(this.$store.state.answer.cca3).setStyle({
+                        fillColor: '#F78282'
+                    })
+                }
+                this.mapDiv.flyTo(this.$store.state.answer.latlng, 5, {
+                    animate: true,
+                    duration: 0.5,
+                })
+            }
+        }
+    },
     methods: {
         defineStyle: function() {
             return { 
@@ -27,36 +66,48 @@ export default {
         },
         onEachFeature: function(feature, layer) {
             let self = this
-            layer.on('click', () => self.selectCountry(feature.properties))
+            self.mapLayer.set(feature.properties.sov_a3, layer)
+            layer.on('click', () => {
+                if(!self.$store.state.selectedCountry) {
+                    self.selectCountry(feature.properties)
+                }
+            })
             layer.on('mouseover', () => { 
-                layer.setStyle({
-                    fillColor: '#FFE360'
-                })  
+                if(!self.$store.state.selectedCountry) {
+                    layer.setStyle({
+                        fillColor: '#FFE360'
+                    })  
+                }
             })
             layer.on('mouseout', () => { 
-                layer.setStyle({
-                    fillColor: '#FFFAC3'
-                })  
+                if(!self.$store.state.selectedCountry) {
+                    layer.setStyle({
+                        fillColor: '#FFFAC3'
+                    })  
+                }
             })
         },
         selectCountry(selectedCountry) {
             this.$emit('selected', (selectedCountry))
         },
         setup: function() {
-            const mapDiv = L.map("mapContainer").setView([35,35], 3);
+            this.mapDiv = L.map("mapContainer").setView([35,35], 3);
             L.tileLayer("https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer/tile/{z}/{y}/{x}",
             {
                 maxZoom: 6,
                 minZoom: 3,
                 wheelPxPerZoomLevel: 150,
-            }).addTo(mapDiv);
+                zoomControl: false
+            }).addTo(this.mapDiv);
             L.geoJSON(data, { 
                 onEachFeature: this.onEachFeature, 
                 style: this.defineStyle 
-            }).addTo(mapDiv)
-            this.addMarkers(mapDiv)
+            }).addTo(this.mapDiv)
+            this.mapDiv.removeControl(mapDiv.zoomControl)
+            this.addMarkers()
         },
-        addMarkers: function(mapDiv) {
+        addMarkers: function() {
+            let self = this
             smallCountries.markers.forEach((item) => {
                 L.circle(item.latLng, {
                     color: '#ACACAC', 
@@ -64,7 +115,7 @@ export default {
                     fillOpacity: 1,
                     weight: 2,
                     radius: 30000
-                }).addTo(mapDiv)
+                }).addTo(self.mapDiv)
                   .on('click', () => this.selectCountry(item))
                   .on('mouseover', (e) => e.target.setStyle({
                     fillColor: '#FFE360', 

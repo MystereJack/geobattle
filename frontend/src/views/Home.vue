@@ -41,7 +41,9 @@ export default {
   },
   methods: {
     startGame() {
-      this.$router.push({ name : 'Lobby', query : { username : this.username, gameId : this.gameId }})
+      this.$store.commit('initUsername', this.username)
+      this.$store.commit('initGameId', this.gameId)
+      this.$router.push({ name : 'Lobby' })
     }
   },
 }

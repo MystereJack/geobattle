@@ -1,7 +1,7 @@
 const gameEvents = require('../constants/game')
 const Game = require('../models/game')
 const Player = require('../models/player')
-const { createOrJoinGame, leaveGame, getGameByPlayerId, startRound, verifyCountry } = require('../services/game.js')
+const { createOrJoinGame, leaveGame, getGameByPlayerId, addOptions } = require('../services/game.js')
 
 const initSockets = (io, socket) => {
     socket.on(gameEvents.JOIN, ({ username, gameId }) => {
@@ -11,9 +11,10 @@ const initSockets = (io, socket) => {
         io.to(game.id).emit(gameEvents.LOBBY, game.showLobby())
     })
 
-    socket.on(gameEvents.START, () => {
+    socket.on(gameEvents.START, (options) => {
         const game = getGameByPlayerId(socket.id)
 
+        addOptions(game.id, options)
         // TODO : Passer la game EN_COURS = true
 
         io.to(game.id).emit(gameEvents.STARTED)

@@ -35,8 +35,13 @@ const getGameByPlayerId = (playerId) => {
     return game
 }
 
+const addOptions = (gameId, options) => {
+    games.find((game) => game.id === gameId).addOptions(options)
+}
+
 module.exports = {
     createOrJoinGame,
     leaveGame,
     getGameByPlayerId,
+    addOptions
 }

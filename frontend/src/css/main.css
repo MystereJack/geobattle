@@ -1,3 +1,8 @@
+body {
+    font-family: "FiraCode", Helvetica, Arial;
+    font-size: 14px;
+}
+
 .login-button {
     background-color: rgb(63, 81, 181) !important;
     color: white !important;
@@ -19,45 +24,53 @@
     text-align: center;    
 }
 
-.answerOK {
+.hint-text {
+    font-family: "Chunk", Helvetica, Arial;
     text-align: center;
-    color: green;
-    font-weight: bold;
+    color: white;
+	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+    font-size: 48px;
+}
+
+.score {
+    font-family: "Chunk", Helvetica, Arial;
+    text-align: center;
+    color: white;
+	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+}
+
+.score-title {
+    font-size: 36px;
+}
+
+.score-player {
+    font-size: 24px;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.answerOK {
+    font-family: "Chunk", Helvetica, Arial;
+    text-align: center;
+    font-size: 36px;
+    color: #96CA8D;
+	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
 }
 
 .answerKO {
+    font-family: "Chunk", Helvetica, Arial;
     text-align: center;
-    color: red;
-    font-weight: bold;
+    font-size: 36px;
+    color: #F78282;
+	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
 }
-
 .hint {
+    font-size: 22px;
     margin-top: 20px;
     position: absolute !important; 
-    height: 100px; 
-    width: 300px; 
-    background-color: white; 
     z-index: 999;
-    text-align: center;
-    padding-top: 20px;
-}
-
-.flex-left {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-
-.scores {
-    margin-left: 20px;
-    margin-bottom: 20px;
-    position: absolute !important; 
-    height: 300px; 
-    width: 200px; 
-    background-color: white; 
-    z-index: 999;
-    left: 0;
-    bottom: 0;
+    display: inline-block;
+    max-width: 500px;
 }
 
 .no-padding {
