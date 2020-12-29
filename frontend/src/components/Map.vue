@@ -37,7 +37,7 @@ export default {
 
         },
         '$store.state.answer': function() {
-            if(this.$store.state.answer) {
+            if(this.$store.state.answer && this.mapLayer.has(this.$store.state.answer.cca3)) {
                 if(this.$store.state.answer.cca3 === this.$store.state.selectedCountry.sov_a3) {
                     this.mapLayer.get(this.$store.state.answer.cca3).setStyle({
                         fillColor: '#96CA8D'
@@ -98,31 +98,32 @@ export default {
                 minZoom: 3,
                 wheelPxPerZoomLevel: 150,
                 zoomControl: false
-            }).addTo(this.mapDiv);
+            }).addTo(this.mapDiv)
             L.geoJSON(data, { 
                 onEachFeature: this.onEachFeature, 
                 style: this.defineStyle 
             }).addTo(this.mapDiv)
-            this.mapDiv.removeControl(mapDiv.zoomControl)
+            this.mapDiv.removeControl(this.mapDiv.zoomControl)
             this.addMarkers()
         },
         addMarkers: function() {
             let self = this
             smallCountries.markers.forEach((item) => {
-                L.circle(item.latLng, {
-                    color: '#ACACAC', 
-                    fillColor: '#FFF7A0', 
-                    fillOpacity: 1,
-                    weight: 2,
-                    radius: 30000
-                }).addTo(self.mapDiv)
-                  .on('click', () => this.selectCountry(item))
-                  .on('mouseover', (e) => e.target.setStyle({
-                    fillColor: '#FFE360', 
-                  }))
-                  .on('mouseout', (e) => e.target.setStyle({
-                     fillColor: '#FFF7A0', 
-                  }))
+                const marker = L.circle(item.latLng, {
+                        color: '#ACACAC', 
+                        fillColor: '#FFF7A0', 
+                        fillOpacity: 1,
+                        weight: 2,
+                        radius: 30000
+                    }).addTo(self.mapDiv)
+                    .on('click', () => this.selectCountry(item))
+                    .on('mouseover', (e) => e.target.setStyle({
+                        fillColor: '#FFE360', 
+                    }))
+                    .on('mouseout', (e) => e.target.setStyle({
+                        fillColor: '#FFF7A0', 
+                    }))
+                this.mapLayer.set(item.sov_a3, marker)
             })
         }
     },

@@ -16,7 +16,7 @@
                 class="login-button"
                 width="150px"
             >
-              CREATE A GAME
+              {{btnText}}
             </v-btn>
           </v-card-actions>
         </v-form>
@@ -31,9 +31,16 @@ export default {
   data: () => ({
     username: "",
     gameId: "",
+    btnText: "CREATE A GAME"
   }),
   mounted() {
     this.gameId = parseInt(this.$route.query.gameId)
+
+    if(this.gameId) {
+      this.btnText = "JOIN THE GAME"
+    } else {
+      this.btnText = "CREATE A GAME"
+    }
 
     if(!this.gameId) {
       this.gameId = Math.floor(Math.random() * 1000000)

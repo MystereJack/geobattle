@@ -54,6 +54,7 @@ module.exports = function Game(id, owner) {
         const lobby = {
             id: this.id,
             players: [],
+            owner: this.owner.username
         }
 
         let self = this

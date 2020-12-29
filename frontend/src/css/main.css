@@ -13,13 +13,6 @@ body {
     margin-right: 20px !important;
 }
 
-.countdown {
-    font-size: 60px;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
 .center {
     text-align: center;    
 }
@@ -28,6 +21,14 @@ body {
     font-family: "Chunk", Helvetica, Arial;
     text-align: center;
     color: white;
+	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+    font-size: 48px;
+}
+
+.countdown {
+    font-family: "Chunk", Helvetica, Arial;
+    text-align: center;
+    color: rgb(255, 255, 255);
 	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
     font-size: 48px;
 }

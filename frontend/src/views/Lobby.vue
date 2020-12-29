@@ -11,8 +11,8 @@
               @click:append="copyText"
               readonly
           ></v-text-field>
-        <h3 class="login-form">Options</h3> 
-        <v-row class="login-form">
+        <h3 class="login-form" v-if="isOwner">Options</h3> 
+        <v-row class="login-form" v-if="isOwner">
           <v-col cols="4">
             <v-radio-group v-model="countryMode" column label="Continent">
               <v-radio label="World" value="World" />
@@ -33,11 +33,19 @@
           <v-col cols="4">
             <v-text-field
               v-model="maxRound"
-              label="Rounds"
+              label="Number of rounds"
               outlined
               class="login-form"
               type="number"
               :rules="roundRules"
+            > 
+            </v-text-field>
+            <v-text-field
+              v-model="durationRound"
+              label="Round duration (in seconds)"
+              outlined
+              class="login-form"
+              type="number"
             > 
             </v-text-field>
           </v-col>
@@ -54,7 +62,7 @@
             {{player.username}}
           </v-col>
         </v-row>
-        <v-card-actions class="justify-center">
+        <v-card-actions class="justify-center" v-if="isOwner">
             <v-btn
                 @click="doStartGame"
                 class="login-button"
@@ -91,12 +99,14 @@ export default {
     countryMode: "World",
     gameMode: "Country",
     maxRound: "10",
+    durationRound: "10",
+    isOwner: false,
     lobby: "",
     gameURL: "",
     roundRules: [ 
-    v => !!v || "This field is required",
-    v => ( v && v > 0 ) || "Minimum one round",
-    v => ( v && v < 51 ) || "Maximum 50 rounds",
+      v => !!v || "This field is required",
+      v => ( v && v > 0 ) || "Minimum one round",
+      v => ( v && v < 51 ) || "Maximum 50 rounds",
     ],
     copyAlert: false
   }),
@@ -108,6 +118,7 @@ export default {
   sockets: {
     gameLobby(lobby) {
       this.lobby = lobby
+      this.isOwner = this.lobby.owner === this.$store.state.username
       this.calculateURL()
     },
     gameStarted() {

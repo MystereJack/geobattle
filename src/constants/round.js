@@ -4,5 +4,6 @@ module.exports = {
     SECOND: 'roundSecond',
     END: 'roundEnd',
     GUESS: 'roundGuess',
-    GUESS_RESULT: 'roundGuessResult'
+    GUESS_RESULT: 'roundGuessResult',
+    COUNTDOWN: 'roundCountdown'
 }
